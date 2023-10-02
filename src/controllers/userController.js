@@ -49,6 +49,25 @@ router.get('/logout', (req, res) => {
     res.clearCookie('token');
 
     res.redirect('/');
-})
+});
+
+
+
+// // Login with an email:
+// router.post('/login', async (req, res) => {
+//     const { email, password } = req.body
+
+//     try {
+//         const token = await userManager.login(email, password);
+
+//         res.cookie(TOKEN_KEY, token);
+
+//         res.redirect('/');
+
+//     } catch (err) {
+//         res.render('users/login', { error: getErrorMessage(err) });
+//     }
+// });
+
 
 module.exports = router;

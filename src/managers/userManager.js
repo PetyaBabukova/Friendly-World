@@ -1,27 +1,27 @@
 const User = require('../models/User');
 const bcrypt = require('bcrypt');
 const jwt = require('../lib/jwt');
-const {SECRET} = require('../config/config')
+const { SECRET } = require('../config/config')
 
-    exports.login = async (username, password) => {
-        // Find user
-        const user = await User.findOne({username});
+exports.login = async (username, password) => {
+    // Find user
+    const user = await User.findOne({ username });
 
-        if (!user) {
-            throw new Error('Invalid user or password!');
-        };
-
-        // Validate password with hash
-        const isValid = await bcrypt.compare(password, user.password);
-
-        if (!isValid) {
-            throw new Error('Invalid user or password!');
-        };
-
-        const token = await generateToken(user);
-        return token;
-
+    if (!user) {
+        throw new Error('Invalid user or password!');
     };
+
+    // Validate password with hash
+    const isValid = await bcrypt.compare(password, user.password);
+
+    if (!isValid) {
+        throw new Error('Invalid user or password!');
+    };
+
+    const token = await generateToken(user);
+    return token;
+
+};
 
 exports.register = async (userData) => {
     const user = await User.findOne({ username: userData.username });
@@ -39,6 +39,43 @@ exports.register = async (userData) => {
     return token;
 };
 
+// // Register and login with an email
+// exports.login = async (email, password) => {
+//     // Find user
+//     const user = await User.findOne({email});
+
+//     if (!user) {
+//         throw new Error('Invalid user or password!');
+//     };
+
+//     // Validate password with hash
+//     const isValid = await bcrypt.compare(password, user.password);
+
+//     if (!isValid) {
+//         throw new Error('Invalid user or password!');
+//     };
+
+//     const token = await generateToken(user);
+//     return token;
+
+// };
+
+// exports.register = async (userData) => {
+// const user = await User.findOne({ email: userData.email });
+
+// if (user) {
+//     throw new Error('Email already exissts!')
+// };
+
+// // After register - redirect
+// //return User.create(userData);
+
+// //If we want to be logged in immediately after register
+// const createdUser = await User.create(userData);
+// const token = await generateToken(createdUser);
+// return token;
+// };
+
 async function generateToken(user) {
     // Generate jwt
     const playload = {
@@ -47,6 +84,6 @@ async function generateToken(user) {
         email: user.email
     }
 
-    const token = await jwt.sign(playload, SECRET, {expiresIn: '2d'});
+    const token = await jwt.sign(playload, SECRET, { expiresIn: '2d' });
     return token;
-}
+};
