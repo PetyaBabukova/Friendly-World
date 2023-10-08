@@ -13,7 +13,7 @@ const { PORT } = require('.//config/config')
 const app = express();
 
 //TODO: change DB name
-mongoose.connect('mongodb://127.0.0.1:27017/petstagram1')
+mongoose.connect('mongodb://127.0.0.1:27017/animalsDonations')
     .then(() => console.log('DB connected!'))
     .catch((err) => console.log('DB Error: ', err.message));
 

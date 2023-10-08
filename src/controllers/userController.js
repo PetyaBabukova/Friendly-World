@@ -9,17 +9,17 @@ router.get('/login', (req, res) => {
 });
 
 router.post('/login', async (req, res) => {
-    const { username, password } = req.body
+    const { email, password } = req.body
 
     try {
-        const token = await userManager.login(username, password);
+        const token = await userManager.login(email, password);
 
         res.cookie(TOKEN_KEY, token);
 
         res.redirect('/');
 
     } catch (err) {
-        res.render('/users/login', { error: getErrorMessage(err) });
+        res.render('users/login', { error: getErrorMessage(err) });
     }
 });
 
@@ -28,23 +28,17 @@ router.get('/register', (req, res) => {
 });
 
 router.post('/register', async (req, res) => {
+    const { username, email, password, repeatPassword } = req.body;
 
-    console.log(req.body);
-    res.end();
-    // const { username, email, password, repeatPassword } = req.body;
 
-    // try {
-    //     const token = await userManager.register({ username, email, password, repeatPassword });
-    //     // res.redirect('/users/login');
+    try {
+        const token = await userManager.register({ email, password, repeatPassword });
+        res.cookie(TOKEN_KEY, token); 
+        res.redirect('/');
 
-    //     // If we want to be logged in immediately after register
-    //     res.cookie(TOKEN_KEY, token); 
-    //     res.redirect('/');
-
-    // } catch (err) {
-    //     res.render('users/register', { error: getErrorMessage(err), username, email });
-    //     // next(err);
-    // }
+    } catch (err) {
+        res.render('users/register', { error: getErrorMessage(err), email });
+    }
 
 });
 
@@ -56,21 +50,8 @@ router.get('/logout', (req, res) => {
 
 
 
-// // Login with an email:
-// router.post('/login', async (req, res) => {
-//     const { email, password } = req.body
+// Login with an email:
 
-//     try {
-//         const token = await userManager.login(email, password);
-
-//         res.cookie(TOKEN_KEY, token);
-
-//         res.redirect('/');
-
-//     } catch (err) {
-//         res.render('users/login', { error: getErrorMessage(err) });
-//     }
-// });
 
 
 module.exports = router;
