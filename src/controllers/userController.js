@@ -28,20 +28,23 @@ router.get('/register', (req, res) => {
 });
 
 router.post('/register', async (req, res) => {
-    const { username, email, password, repeatPassword } = req.body;
 
-    try {
-        const token = await userManager.register({ username, email, password, repeatPassword });
-        // res.redirect('/users/login');
+    console.log(req.body);
+    res.end();
+    // const { username, email, password, repeatPassword } = req.body;
 
-        // If we want to be logged in immediately after register
-        res.cookie(TOKEN_KEY, token); 
-        res.redirect('/');
+    // try {
+    //     const token = await userManager.register({ username, email, password, repeatPassword });
+    //     // res.redirect('/users/login');
 
-    } catch (err) {
-        res.render('users/register', { error: getErrorMessage(err), username, email });
-        // next(err);
-    }
+    //     // If we want to be logged in immediately after register
+    //     res.cookie(TOKEN_KEY, token); 
+    //     res.redirect('/');
+
+    // } catch (err) {
+    //     res.render('users/register', { error: getErrorMessage(err), username, email });
+    //     // next(err);
+    // }
 
 });
 
