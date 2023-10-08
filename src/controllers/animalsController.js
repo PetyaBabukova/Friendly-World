@@ -73,6 +73,19 @@ router.post('/:animalId/edit', async (req, res) =>{
         res.render('animals/edit', { error: 'Unable to update animal', ...animalData })
     }
 
+});
+
+router.get('/:animalId/delete', async (req, res) => {
+
+    try {
+        const animalId = req.params.animalId;
+        await animalsManager.delete(animalId);
+        res.redirect('/animals')
+
+    } catch (error) {
+        res.redirect(`/animals/${animalId}/details`, { error: 'Unsuccessful deletion' })
+    }
+
 })
 
 router.get('/:animalId/buy', async (req, res) => {
@@ -99,18 +112,7 @@ router.get('/:animalId/buy', async (req, res) => {
     }
 });
 
-router.get('/:animalId/delete', async (req, res) => {
 
-    try {
-        const animalId = req.params.animalId;
-        await animalsManager.delete(animalId);
-        res.redirect('/animal')
-
-    } catch (error) {
-        res.redirect(`/animals/${animalId}/details`, { error: 'Unsuccessful deletion' })
-    }
-
-})
 
 
 
