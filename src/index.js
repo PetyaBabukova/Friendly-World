@@ -32,7 +32,7 @@ app.use(cookieParser());
 app.use(auth)
 app.use(routes);
 // after routes!
-app.use(errorHandler);
+// app.use(errorHandler);
 
 
 

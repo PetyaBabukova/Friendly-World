@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const { getErrorMessage } = require('../utils/errorHelpers');
+// const { getErrorMessage } = require('../utils/errorHelpers');
 const animalsManager = require('../managers/animalsManager');
 
 router.get('/', async (req, res)=>{
@@ -27,7 +27,7 @@ router.post('/create', async (req, res) => {
 
     } catch (error) {
         res.render('animals/create', {
-            error: getErrorMessage(error),  
+            error: 'Animal creation failed',  
             data: animalData  
         });
     }
@@ -49,6 +49,31 @@ router.get('/:animalId/details', async (req, res) => {
 
     res.render('animals/details', { ...animal, isOwner, isLogged, hasDonate });
 });
+
+router.get('/:animalId/edit', async (req, res) => {
+    const animalId = req.params.animalId;
+
+    try {
+        const animal = await animalsManager.getOne(animalId).lean();
+        res.render('animals/edit', {...animal} )
+
+    } catch (error) {
+        res.render('/404')
+    }
+});
+
+router.post('/:animalId/edit', async (req, res) =>{
+    const animalId = req.params.animalId;
+    const animalData = req.body
+
+    try {
+        const animal = await animalsManager.edit(animalId, animalData);
+        res.redirect('/animals');
+    } catch (error) {
+        res.render('animals/edit', { error: 'Unable to update animal', ...animalData })
+    }
+
+})
 
 router.get('/:animalId/buy', async (req, res) => {
     const animalId = req.params.animalId;
@@ -87,30 +112,7 @@ router.get('/:animalId/delete', async (req, res) => {
 
 })
 
-router.get('/:animalId/edit', async (req, res) => {
-    const animalId = req.params.animalId;
 
-    try {
-        const animal = await animalsManager.getOne(animalId).lean();
-        res.render('animals/edit', {...animal} )
-
-    } catch (error) {
-        res.render('/404')
-    }
-});
-
-router.post('/:animalId/edit', async (req, res) =>{
-    const animalId = req.params.animalId;
-    const animalData = req.body
-
-    try {
-        const animal = await animalsManager.edit(animalId, animalData);
-        res.redirect('/animal');
-    } catch (error) {
-        res.render('animals/edit', { error: 'Unable to update animal', ...animalData })
-    }
-
-})
 
 
 router.get('/search', (req, res)=>{
