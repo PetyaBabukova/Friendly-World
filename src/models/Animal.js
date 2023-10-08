@@ -40,7 +40,7 @@ const animalSchema = new mongoose.Schema({
         // minlength: 10,
     },
 
-    donantions: [{
+    donations: [{
         type: mongoose.Types.ObjectId,
         ref: 'User'
     }],

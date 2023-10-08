@@ -23,9 +23,10 @@ router.post('/create', async (req, res) => {
 
     try {
         await animalsManager.create(animalData)
-            .then(() => res.redirect('/animals'))
+            res.redirect('/animals')
 
     } catch (error) {
+
         res.render('animals/create', {
             error: 'Animal creation failed',  
             data: animalData  
@@ -42,10 +43,9 @@ router.get('/:animalId/details', async (req, res) => {
         return;
     };
 
-    let hasDonate= animal.donantions.includes(req.user?._id.toString());
+    let hasDonate= animal.donations.toString().includes(req.user?._id.toString());
     const isOwner = req.user?._id.toString() === animal.owner._id.toString();
     const isLogged = Boolean(req.user);
-
 
     res.render('animals/details', { ...animal, isOwner, isLogged, hasDonate });
 });
@@ -88,24 +88,27 @@ router.get('/:animalId/delete', async (req, res) => {
 
 })
 
-router.get('/:animalId/buy', async (req, res) => {
+router.get('/:animalId/donate', async (req, res) => {
     const animalId = req.params.animalId;
     const user = req.user;
     const animal = await animalsManager.getOne(animalId).lean();
-
+    
     const isOwner = req.user?._id.toString() === animal.owner._id.toString();
     const isLogged = Boolean(req.user);
+    // console.log(isLogged);
 
     if (isLogged && !isOwner) {
         try {
-            await animalsManager.buy(animalId, user._id);
+            await animalsManager.donate(animalId, user._id);
             res.redirect(`/animals/${animalId}/details`);
         } catch (err) {
-            res.render('animal/details', {
-                error: 'You cannot buy this animal',
-                isOwner,
-                isLogged,
-            });
+
+            console.log(err);
+            // res.render('animals/details', {...animal,
+            //     error: 'You cannot donate',
+            //     isOwner,
+            //     isLogged,
+            // });
         }
     } else {
         res.redirect(`/animals/${animalId}/details`);
