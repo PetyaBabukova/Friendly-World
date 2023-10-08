@@ -42,12 +42,12 @@ router.get('/:animalId/details', async (req, res) => {
         return;
     };
 
-    let hasBought= animal.buyanimal.includes(req.user?._id.toString());
+    let hasDonate= animal.donantions.includes(req.user?._id.toString());
     const isOwner = req.user?._id.toString() === animal.owner._id.toString();
     const isLogged = Boolean(req.user);
 
 
-    res.render('animal/details', { ...animal, isOwner, isLogged, hasBought });
+    res.render('animals/details', { ...animal, isOwner, isLogged, hasDonate });
 });
 
 router.get('/:animalId/buy', async (req, res) => {
@@ -61,7 +61,7 @@ router.get('/:animalId/buy', async (req, res) => {
     if (isLogged && !isOwner) {
         try {
             await animalsManager.buy(animalId, user._id);
-            res.redirect(`/animal/${animalId}/details`);
+            res.redirect(`/animals/${animalId}/details`);
         } catch (err) {
             res.render('animal/details', {
                 error: 'You cannot buy this animal',
@@ -70,7 +70,7 @@ router.get('/:animalId/buy', async (req, res) => {
             });
         }
     } else {
-        res.redirect(`/animal/${animalId}/details`);
+        res.redirect(`/animals/${animalId}/details`);
     }
 });
 
@@ -82,7 +82,7 @@ router.get('/:animalId/delete', async (req, res) => {
         res.redirect('/animal')
 
     } catch (error) {
-        res.redirect(`/animal/${animalId}/details`, { error: 'Unsuccessful deletion' })
+        res.redirect(`/animals/${animalId}/details`, { error: 'Unsuccessful deletion' })
     }
 
 })
@@ -92,7 +92,7 @@ router.get('/:animalId/edit', async (req, res) => {
 
     try {
         const animal = await animalsManager.getOne(animalId).lean();
-        res.render('animal/edit', {...animal} )
+        res.render('animals/edit', {...animal} )
 
     } catch (error) {
         res.render('/404')
@@ -107,7 +107,7 @@ router.post('/:animalId/edit', async (req, res) =>{
         const animal = await animalsManager.edit(animalId, animalData);
         res.redirect('/animal');
     } catch (error) {
-        res.render('animal/edit', { error: 'Unable to update animal', ...animalData })
+        res.render('animals/edit', { error: 'Unable to update animal', ...animalData })
     }
 
 })
