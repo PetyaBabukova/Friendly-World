@@ -4,9 +4,9 @@ const animalsManager = require('../managers/animalsManager');
 
 router.get('/', async (req, res)=>{
 
-    await animalsManager.getAll().lean()
-        .then((animal) => {
-            res.render('animals/dashboard', {animal});
+    await animalsManager.getAll()
+        .then((animals) => {
+            res.render('animals/dashboard', {animals});
             
         });
 });
@@ -20,12 +20,13 @@ router.post('/create', async (req, res) => {
         ...req.body,
         owner: req.user._id
     }
+
     try {
         await animalsManager.create(animalData)
-            .then(() => res.redirect('/animal'))
+            .then(() => res.redirect('/animals'))
 
     } catch (error) {
-        res.render('animal/create', {
+        res.render('animals/create', {
             error: getErrorMessage(error),  
             data: animalData  
         });

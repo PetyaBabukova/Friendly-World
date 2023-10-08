@@ -10,7 +10,7 @@ const animalSchema = new mongoose.Schema({
     years: {
         type: Number,
         required: [true, 'You need to specify animal years'],
-        min: 1,
+        // min: 0,
     },
     
     kind: {

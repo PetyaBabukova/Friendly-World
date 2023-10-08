@@ -1,8 +1,10 @@
 const Animal = require('../models/Animal');
 
-exports.create = (animalData) => animal.create(animalData);
+exports.create = (animalData) => {
+    console.log(animalData);
+    Animal.create(animalData)};
 
-exports.getAll= ()=> Animal.find();
+exports.getAll= ()=> Animal.find().lean();
 
 exports.getOne = (animalId) => Animal.findById(animalId);
 
