@@ -7,7 +7,6 @@ const cookieParser = require('cookie-parser');
 const {auth} = require('./middlewares/authMiddleware')
  
 const routes = require('./routes');
-const { errorHandler } = require('./middlewares/errorHandlerMiddleware');
 const { PORT } = require('.//config/config')
 
 const app = express();
