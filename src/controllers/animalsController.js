@@ -115,6 +115,25 @@ router.get('/:animalId/donate', async (req, res) => {
     }
 });
 
+router.get('/search', async (req, res)=>{
+    animalsManager.getAll()
+        .then((animals)=> {
+            res.render('animals/search', {animals})
+        })
+    
+});
+
+router.post('/search', async (req, res)=>{
+
+    animalsManager.search(req.body.search)
+    .then((animals)=>{
+        res.render('animals/search', {animals})
+    })
+    .catch((err)=> {
+        console.log(err);
+    })
+})
+
 
 
 

@@ -3,25 +3,27 @@
             <section id="search">
                 <h2>Search by Location</h2>
 
-                <form class="search-wrapper cf" method="" action="#">
-                    <input id="#search-input" type="text" name="" placeholder="Search here..." required />
+                <form class="search-wrapper cf" method="post" >
+                    <input id="#search-input" type="text" name="search" placeholder="Search here..." required />
                     <button type="submit">Search</button>
                 </form>
 
                 <div id="search-container">
                     <ul class="card-wrapper">
                         <!-- Display a li with information about every post (if any)-->
+                            {{#each animals}}
                         <li class="card">
-                            <img src="/images/animal3.jpg"/>
+                            <img src="{{image}}"/>
                             <p>
-                                <strong>Name: </strong><span class="name">Mama and Baby Lolly</span>
+                                <strong>Name: </strong><span class="name">{{name}}</span>
                             </p>
                             <p>
-                                <strong>Location: </strong><span class="location">Toronto Zoo</span>
+                                <strong>Location: </strong><span class="location">{{location}}</span>
                             </p>
-                            <p><strong>Need of:</strong><span class="need-of">Food</span></p>
-                            <a class="details-btn" href="#">Details</a>
+                            <p><strong>Need of:</strong><span class="need-of">{{need}}</span></p>
+                            <a class="details-btn" href="/animals/{{_id}}/details">Details</a>
                         </li>
+                        {{/each}}
                     </ul>
 
                     <!-- Display an h2 if there are no posts -->
