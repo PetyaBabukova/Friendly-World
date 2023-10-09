@@ -1,8 +1,17 @@
 const router = require('express').Router();
+const animalsManager = require('../managers/animalsManager')
 
-router.get('/', (req, res) => {
+router.get('/', async (req, res) => {
 
-    res.render('home');
+    await animalsManager.getAll()
+        .then((animals) => {
+
+            
+            res.render('home', {animals: animals.slice(-3)});
+            
+        }).catch(err=> console.log(err))
+
+
 
     });
 
